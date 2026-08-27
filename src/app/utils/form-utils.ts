@@ -1,4 +1,4 @@
-import { FormArray, FormGroup, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angular/forms";
 
 
 export class FormUtils {
@@ -14,11 +14,21 @@ export class FormUtils {
 
                 case 'min':
                     return `Valor minimo de ${errors['min'].min}`;
+
+                case 'gameExists':
+                    return 'Este juego ya se encuentra en favoritos';
             }
         }
 
 
         return null;
+    }
+
+    static getControlError(control: AbstractControl): string | null {
+        const errors = control.errors ?? {};
+
+        return FormUtils.getTextErrors(errors);
+
     }
 
     static isValidField(form: FormGroup, fieldName: string): boolean | null {
