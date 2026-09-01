@@ -3,6 +3,10 @@ import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angula
 
 export class FormUtils {
 
+    static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
+    static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+    static notOnlySpacesPattern = '^[a-zA-Z0-9]+$';
+
     static getTextErrors(errors: ValidationErrors) {
         for (const key of Object.keys(errors)) {
             switch (key) {
@@ -15,8 +19,20 @@ export class FormUtils {
                 case 'min':
                     return `Valor minimo de ${errors['min'].min}`;
 
+                case 'email':
+                    return `El valor ingresado no es un correo electronico`;
+
+                case 'pattern':
+                    if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
+                        return 'El correo electronico no es permitido'
+                    }
+
+                    return 'Error de patron contra expresion regular'
                 case 'gameExists':
                     return 'Este juego ya se encuentra en favoritos';
+
+                default:
+                    return `Error de validacion no controlado ${key}`
             }
         }
 
